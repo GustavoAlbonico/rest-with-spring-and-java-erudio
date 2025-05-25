@@ -1,35 +1,45 @@
 package br.com.erudio.data.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.com.erudio.serializer.GenderSerializer;
 
-@JsonPropertyOrder({"id","first_name","last_name","address","genger"})
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonProperty;
+// import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+// @JsonPropertyOrder({"id","first_name","last_name","address","genger"})
 public class PersonDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    
-    @JsonProperty("first_name")
+
+    // @JsonProperty("first_name")
     private String firstName;
 
-    @JsonProperty("last_name")
+    // @JsonProperty("last_name")
     private String lastName;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonSerialize(using = GenderSerializer.class)
+    private Date birthDay;
 
     private String address;
 
-    @JsonIgnore
+    // @JsonIgnore
     private String gender;
 
-    public PersonDTO() {}
+    public PersonDTO() {
+    }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -37,7 +47,7 @@ public class PersonDTO implements Serializable {
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -45,15 +55,23 @@ public class PersonDTO implements Serializable {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public Date getBirthDay() {
+        return this.birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
@@ -61,7 +79,7 @@ public class PersonDTO implements Serializable {
     }
 
     public String getGender() {
-        return gender;
+        return this.gender;
     }
 
     public void setGender(String gender) {
@@ -70,12 +88,18 @@ public class PersonDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof PersonDTO person)) return false;
-        return Objects.equals(getId(), person.getId()) && Objects.equals(getFirstName(), person.getFirstName()) && Objects.equals(getLastName(), person.getLastName()) && Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getGender(), person.getGender());
+        if (o == this)
+            return true;
+        if (!(o instanceof PersonDTO)) {
+            return false;
+        }
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(birthDay, personDTO.birthDay) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getAddress(), getGender());
+        return Objects.hash(id, firstName, lastName, birthDay, address, gender);
     }
+
 }
